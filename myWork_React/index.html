@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>learn Reactjs</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<div id="content"></div>	
+
+	<script type="text/babel">
+		var CONTACTS = [
+		{
+			id: 1,
+			name: 'Sasha',
+			phoneNumber: '68416546845',
+			image: "http://www.factroom.ru/facts/wp-content/uploads/2012/06/18.jpg"
+		}, {
+		    id: 2,
+			name: 'Petya',
+			phoneNumber: '64646465465',
+			image: "https://uznayvse.ru/images/content/2017/4/uzn_14913803259.jpg"
+
+	    }, {
+            id: 3,
+			name: 'Vasya',
+			phoneNumber: '68414684684',
+			image: "https://i.ytimg.com/vi/MoNnIiwnwOM/maxresdefault.jpg"
+	    }, {
+            id: 4,
+			name: 'Katya',
+			phoneNumber: '17461464684',
+			image: "http://www.factroom.ru/facts/wp-content/uploads/2012/06/21.jpg"
+	    }
+		];
+
+		var Contact = React.createClass({
+			render: function() {
+				return (
+				    <li className="contact">
+				        <img className="contact-image" src={this.props.image} width="60px" height="60px"/>
+				        <div className="contact-info">
+				            <div className="contact-name"> {this.props.name} </div>
+				            <div className="contact-number"> {this.props.phoneNumber} </div>
+				        </div>
+				    </li>
+				);
+			}
+		});
+
+		var ContactsList = React.createClass({
+			getInitialState: function() {
+				return {
+					displayadContacts: CONTACTS
+				};
+			},
+
+			handleSearch: function(event) {
+				var searchQuery = event.target.value.toLowerCase();
+				var displayadContacts = CONTACTS.filter(function(el) {
+					var searchValue = el.name.toLowerCase();
+					return searchValue.indexOf(searchQuery) !== -1;
+				});
+
+				this.setState({
+					displayadContacts: displayadContacts
+				});
+			},
+
+			render: function() {
+				return (
+				    <div className="contacts">
+				        <input type="text" className="search-field" onChange={this.handleSearch} />
+				    	<ul className="contacts-list">
+				    		{
+				    			this.state.displayadContacts.map(function(el) {
+				    				return <Contact 
+				    				key={el.id}
+				    				name={el.name}
+				    				phoneNumber={el.phoneNumber}
+				    				image={el.image}
+				    				/>;
+				    			})
+				    		}
+				    	</ul>
+				    </div>
+				);
+			}
+		});
+
+		ReactDOM.render(
+		    <ContactsList />,
+		    document.getElementById("content")
+		);
+	</script>
+</body>
+</html>
